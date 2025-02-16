@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Events Demo</title>
+    <style>
+        body{
+            background-color: aqua;
+        }
+        .animate-box {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            animation: exampleAnimation 2s infinite alternate;
+        }
+        @keyframes exampleAnimation {
+            from { background-color: blue; }
+            to { background-color: red; }
+        }
+        .drag-box {
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            margin: 20px;
+        }
+        .drop-zone {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed black;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar"></div>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+     fetch('navBar.html')
+         .then(response => response.text())
+         .then(data => {
+             document.getElementById('navbar').innerHTML = data;
+         });
+ });</script>
+    <h1>HTML Event Demonstration</h1>
+    
+    <h2>Animation Event</h2>
+    <div class="animate-box" id="animationBox"></div>
+    <p id="animationEvent"></p>
+    
+    <h2>Drag Event</h2>
+    <div class="drag-box" draggable="true" id="dragItem"></div>
+    <div class="drop-zone" id="dropZone">Drop here</div>
+    <p id="dragEvent"></p>
+    
+    <h2>Input Event</h2>
+    <input type="text" id="textInput" placeholder="Type something...">
+    <p id="inputEvent"></p>
+    
+    <h2>Mouse Event</h2>
+    <button id="mouseButton">Hover or Click Me</button>
+    <p id="mouseEvent"></p>
+    
+    <h2>Focus Event</h2>
+    <input type="text" id="focusInput" placeholder="Click to focus...">
+    <p id="focusEvent"></p>
+
+    <script>
+        // Animation Event
+        document.getElementById("animationBox").addEventListener("animationiteration", function() {
+            document.getElementById("animationEvent").innerText = "Animation Iterated!";
+        });
+
+        // Drag Events
+        let dragItem = document.getElementById("dragItem");
+        let dropZone = document.getElementById("dropZone");
+        
+        dragItem.addEventListener("dragstart", function(event) {
+            event.dataTransfer.setData("text", event.target.id);
+            document.getElementById("dragEvent").innerText = "Dragging started!";
+        });
+
+        dropZone.addEventListener("dragover", function(event) {
+            event.preventDefault();
+        });
+
+        dropZone.addEventListener("drop", function(event) {
+            event.preventDefault();
+            let data = event.dataTransfer.getData("text");
+            dropZone.appendChild(document.getElementById(data));
+            document.getElementById("dragEvent").innerText = "Dropped successfully!";
+        });
+
+        // Input Event
+        document.getElementById("textInput").addEventListener("input", function(event) {
+            document.getElementById("inputEvent").innerText = "You typed: " + event.target.value;
+        });
+
+        // Mouse Event
+        let mouseButton = document.getElementById("mouseButton");
+        
+        mouseButton.addEventListener("mouseover", function() {
+            document.getElementById("mouseEvent").innerText = "Mouse Hovered!";
+        });
+
+        mouseButton.addEventListener("click", function() {
+            document.getElementById("mouseEvent").innerText = "Button Clicked!";
+        });
+
+        // Focus Event
+        document.getElementById("focusInput").addEventListener("focus", function() {
+            document.getElementById("focusEvent").innerText = "Input Focused!";
+        });
+    </script>
+</body>
+</html>
